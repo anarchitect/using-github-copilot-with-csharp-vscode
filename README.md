@@ -19,7 +19,7 @@
 4. Explain and document code with **inline chat**.
 5. Ask questions about a codebase, **plan** a change, then let an **agent** build and test it.
 6. Teach Copilot your team's conventions with **custom instructions**.
-7. (Optional, preview) Bring in Microsoft Learn docs with a **Copilot connector** or an **MCP server**.
+7. (Optional, preview, if MCP is allowed) Bring in Microsoft Learn docs with a **Copilot connector** or an **MCP server**.
 
 **Time:** about 90 minutes. **Level:** beginner. No prior Copilot experience needed.
 
@@ -40,7 +40,7 @@ Want a shorter, presenter-led version? See the [live demo walkthrough](demo/walk
 ## Part 0 — Prerequisites (do this before the session)
 
 1. **A GitHub account with Copilot.** Any plan works, including **Copilot Free** (signing in without a plan enrolls an eligible account in Copilot Free). If your company provides Copilot, use that account.
-2. **VS Code 1.146 or later** — <https://code.visualstudio.com/download>. Check with **Help > About** (macOS: **Code > About Visual Studio Code**). GitHub Copilot is built into VS Code; you don't need to install a separate Copilot extension.
+2. **VS Code 1.146 or later** — <https://code.visualstudio.com/download>. Check with **Help > About**. GitHub Copilot is built into VS Code; you don't need to install a separate Copilot extension.
 3. **.NET 10 SDK** — <https://dotnet.microsoft.com/download/dotnet/10.0>. Check in a terminal:
 
    ```bash
@@ -51,7 +51,7 @@ Want a shorter, presenter-led version? See the [live demo walkthrough](demo/walk
 
    > .NET 8 (used by the original module) reached end of support on 10 November 2026. Use .NET 10 (LTS, supported to November 2028).
 
-4. **C# Dev Kit** extension for VS Code — install from the Extensions view (`Ctrl+Shift+X`, macOS `Cmd+Shift+X`) by searching for `C# Dev Kit`. This repo also recommends it automatically when you open the folder.
+4. **C# Dev Kit** extension for VS Code — install from the Extensions view (`Ctrl+Shift+X`) by searching for `C# Dev Kit`. This repo also recommends it automatically when you open the folder.
 5. **Git** — <https://git-scm.com/downloads>.
 
 ## Part 1 — Get the sample running locally
@@ -92,7 +92,7 @@ Want a shorter, presenter-led version? See the [live demo walkthrough](demo/walk
 ## Part 2 — Sign in and start a Copilot harness session
 
 1. **Sign in:** select **Sign in to use Copilot** in the Copilot menu in the Status Bar, or use the **Accounts** menu in the Activity Bar > **Sign in with GitHub to use GitHub Copilot**.
-2. **Open the Chat view:** `Ctrl+Alt+I` (macOS `Ctrl+Cmd+I`). Start a new chat with `Ctrl+N` (macOS `Cmd+N`) while the Chat view has focus.
+2. **Open the Chat view:** `Ctrl+Alt+I`. Start a new chat with `Ctrl+N` while the Chat view has focus.
 3. In the chat input you'll find four pickers. Set them like this for the whole module:
 
    | Picker | Choose | Why |
@@ -121,7 +121,7 @@ Inline suggestions appear as grey "ghost text" while you type.
    ```
 
 3. Wait for the grey suggestion. Press `Tab` to accept it, or `Esc` to dismiss it. Keep pressing `Enter`/`Tab` until the class is complete.
-4. Hover over a suggestion to see the toolbar, where you can cycle alternatives or accept one word at a time (`Ctrl+Right Arrow`, macOS `Cmd+Right Arrow`).
+4. Hover over a suggestion to see the toolbar, where you can cycle alternatives or accept one word at a time (`Ctrl+Right Arrow`).
 
 > **✅ Checkpoint 3:** `Customer.cs` contains a `Customer` class with `Id`, `Name`, `Email`, and an `IsValidEmail()`-style method, and `dotnet build` still succeeds.
 >
@@ -143,7 +143,7 @@ Next edit suggestions (NES) predict the *next* change you'll need, based on the 
 Inline chat lets you ask for a change right where your cursor is.
 
 1. Select the email-validation method in `Customer.cs`.
-2. Press `Ctrl+I` (macOS `Cmd+I`) and type:
+2. Press `Ctrl+I` and type:
 
    ```text
    Explain what this method does and list any email formats it would get wrong.
@@ -268,7 +268,7 @@ Custom instructions are Markdown files that Copilot reads automatically, so you 
 > [!NOTE]
 > The Copilot harness also reads `AGENTS.md` files. **Prompt files (`*.prompt.md`) aren't loaded in Copilot harness sessions** — convert reusable prompts to [agent skills](https://code.visualstudio.com/docs/agent-customization/migrate-customizations) instead.
 
-## Exercise 9 (optional, preview) — Bring in Microsoft Learn docs
+## Exercise 9 (optional, preview, if MCP is allowed) — Bring in Microsoft Learn docs
 
 Give Copilot up-to-date .NET documentation. Choose **one** option.
 
@@ -343,13 +343,13 @@ If you, or your learners, used Copilot chat before VS Code 1.143, you may have L
 
 ## Quick reference
 
-| Action | Windows/Linux | macOS |
-| --- | --- | --- |
-| Open the Chat view | `Ctrl+Alt+I` | `Ctrl+Cmd+I` |
-| New chat (in Chat view) | `Ctrl+N` | `Cmd+N` |
-| Inline chat (editor or terminal) | `Ctrl+I` | `Cmd+I` |
-| Accept / dismiss suggestion | `Tab` / `Esc` | `Tab` / `Esc` |
-| Command Palette | `Ctrl+Shift+P` | `Cmd+Shift+P` |
+| Action | Windows |
+| --- | --- |
+| Open the Chat view | `Ctrl+Alt+I` |
+| New chat (in Chat view) | `Ctrl+N` |
+| Inline chat (editor or terminal) | `Ctrl+I` |
+| Accept / dismiss suggestion | `Tab` / `Esc` |
+| Command Palette | `Ctrl+Shift+P` |
 
 ## Learn more
 

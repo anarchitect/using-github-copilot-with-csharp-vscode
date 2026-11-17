@@ -55,7 +55,7 @@ Review my codebase and explain the project including any relevant programming la
    dotnet build
    ```
 
-   > This replaces `make install` / `npm install` from Node.js demos. `dotnet build` restores NuGet packages automatically, on Windows, macOS, and Linux.
+   > This replaces `make install` / `npm install` from Node.js demos. `dotnet build` restores NuGet packages automatically.
 
 2. **[Do]** Start the API:
 
