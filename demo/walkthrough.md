@@ -1,7 +1,7 @@
 # Live demo walkthrough: Copilot in VS Code with C#
 
 > **Current as of 18 November 2026** — VS Code 1.146, .NET 10, **Copilot harness**.
-> A presenter-led walkthrough (about 30 minutes) using this repository's C# sample. It makes the same points as the
+> A presenter-led walkthrough (budget 30–45 minutes; not a measured class duration) using this repository's C# sample. It makes the same points as the
 > [OctoCAT Supply general demo](https://github.com/Azure-Samples/octocat-supply/blob/main/demo/walkthroughs/general/demo-steps.md)
 > but is rewritten for this sample, the Copilot harness, and current terminology. No OctoCAT Supply code is used.
 > What changed and why: [VALIDATION.md](../VALIDATION.md#demo-walkthrough-demo1--demo2).
@@ -14,17 +14,18 @@
 ## Before you present (5 minutes, once)
 
 1. Complete [Part 0 and Part 1 of the README](../README.md#part-0--prerequisites-do-this-before-the-session) so the sample builds and runs.
-2. Make sure the repo is clean so the demo starts from a known state:
+2. Use a **dedicated disposable clone**, not a working company repository. Confirm it is clean:
 
-   ```bash
+   ```powershell
    git status
    ```
 
+   If you have earlier exercise changes or instruction files, keep them and use a fresh clone for this demo. Do not delete existing work to reset.
 3. In the Chat view (`Ctrl+Alt+I`), start a new chat and check the pickers:
    1. **Session Target:** **Copilot** (not *Local*).
    2. **Model:** **Copilot Fusion** (or **Auto**, if shown).
-   3. **Permissions:** **Manual permissions**, so the audience sees each approval.
-4. If `.github/copilot-instructions.md` exists from an earlier run, delete it so Demo 2 starts from scratch.
+   3. **Permissions:** **Manual permissions**. Explain that previous approvals and read-only actions may not prompt again.
+4. Use synthetic data only. Local file operations still involve hosted model inference; follow company Copilot policy. See the README's prerequisite and C# Dev Kit licensing checks.
 
 ---
 
@@ -32,7 +33,7 @@
 
 ### 1.1 Initial setup: VS Code workspace
 
-1. **[Do]** Open the folder in VS Code (`code .`) and select **Yes, I trust the authors**.
+1. **[Do]** Inspect the public sample, open it in VS Code (`code .`), and select **Yes, I trust the authors** only if you trust it.
 2. **[Do]** Point out the Copilot menu in the Status Bar (signed in) and the Chat view's **Session Target: Copilot**.
 
 ✅ The Explorer shows `src/BackEnd`, `src/FrontEnd`, and `tests/BackEnd.Tests`.
@@ -51,7 +52,7 @@ Review my codebase and explain the project including any relevant programming la
 
 1. **[Do]** Open the terminal (`` Ctrl+` ``) and restore and build:
 
-   ```bash
+   ```powershell
    dotnet build
    ```
 
@@ -59,13 +60,15 @@ Review my codebase and explain the project including any relevant programming la
 
 2. **[Do]** Start the API:
 
-   ```bash
+   ```powershell
    dotnet run --project src/BackEnd
    ```
 
 3. **[Optional]** In a second terminal, start the web app with `dotnet run --project src/FrontEnd` and open <http://localhost:5200/weather>.
 
 ✅ The terminal shows `Now listening on: http://localhost:5100`.
+
+4. **[Do]** Stop both apps with `Ctrl+C` before the next step. This avoids locked build files and stale results on Windows.
 
 ### 1.4 Inline completion, then let the agent finish the job
 
@@ -87,25 +90,27 @@ Review my codebase and explain the project including any relevant programming la
    public Task<int> CountByCityAsync(string city) => ...
    ```
 
-   > Your method name and body may differ — that's normal. If no suggestion appears, type `public` to nudge Copilot.
+   > Your method name and body may differ — that's normal. If no suggestion appears, type `public` to nudge Copilot. If suggestions remain unavailable, ask Agent to add `CountByCityAsync(string city)` using the existing case-insensitive lookup, returning `0` for an unknown city. Label this as the agent fallback, not an inline-completion demonstration.
 
 4. **[PROMPT]** `[Agent]`
 
    ```text
-   Add a retrieval endpoint for the count-by-city method I just added in WeatherRepository. Also update the API documentation for it (OpenAPI name, summary, and description). Do not run or test it yet.
+   Add GET /weatherforecast/{city}/count for the count-by-city method I just added in WeatherRepository. Return the number of forecasts, or 0 for an unknown city. Update the API documentation (OpenAPI name, summary, and description). Do not build, run or test the app yet.
    ```
 
-✅ The agent edits `Program.cs` to add an endpoint in the **Weather** group, such as `GET /weatherforecast/{city}/count`, with `.WithName(...)`, `.WithSummary(...)`, and `.WithDescription(...)`. It doesn't run any commands. Select **Keep** to accept the changes.
+✅ The agent edits `Program.cs` to add `GET /weatherforecast/{city}/count` in the **Weather** group with `.WithName(...)`, `.WithSummary(...)`, and `.WithDescription(...)`. It may read files or inspect the repository, but should not build or start the app. Review the diff before selecting **Keep**.
 
 ### 1.5 Verification
 
-1. **[Do]** In the API terminal, press `Ctrl+C`, then run `dotnet run --project src/BackEnd` again.
+1. **[Do]** With both apps stopped, run `dotnet build` and `dotnet test`. Fix failures before continuing, then run `dotnet run --project src/BackEnd`.
 2. **[Do]** Open <http://localhost:5100/scalar>.
    1. Find the **Weather** section.
    2. Find the new endpoint, for example `GET /weatherforecast/{city}/count`.
    3. Select it, enter `Sydney` for `city`, and send the request.
 
 ✅ The response is `5`, and the summary and description you asked for appear in the docs.
+
+Also try `Atlantis`: the documented count contract returns `0`. Check <http://localhost:5100/weatherforecast/Sydney/count> directly if Scalar cannot send the request. Stop the API before Demo 2's build step.
 
 > Point to make: inline suggestions got the method started in seconds; the agent then wired it through the API *and* its documentation across files.
 
@@ -118,7 +123,7 @@ Review my codebase and explain the project including any relevant programming la
 **[PROMPT]** `[Agent]`
 
 ```text
-Do a super deep analysis of this codebase. Then create or update .github/copilot-instructions.md to include best practices for every programming language used in the project. Use https://learn.microsoft.com/dotnet/csharp/fundamentals/coding-style/coding-conventions as a reference for C#.
+Inspect this sample's .NET 10 API, Blazor InteractiveServer app and xUnit tests. Create a concise .github/copilot-instructions.md with verified repository facts, build/test commands and relevant conventions. Use https://learn.microsoft.com/dotnet/csharp/fundamentals/coding-style/coding-conventions as a C# reference. Apply async only to actual I/O. Keep new feature endpoints in separate files, but do not move existing endpoints or modify application code in this step.
 ```
 
 1. **[Do]** When Copilot asks to fetch the Microsoft Learn page, show the approval and select **Allow**.
@@ -137,7 +142,7 @@ Do a super deep analysis of this codebase. Then create or update .github/copilot
 
 This shows how quickly instructions apply to **every new** chat in the repo.
 
-1. **[Do]** Pick a persona — for example Neil Armstrong, James Bond, or Ada Lovelace.
+1. **[Do]** Pick a persona, for example Neil Armstrong or James Bond.
 2. **[Do]** Add this line at the top of `.github/copilot-instructions.md` (replace the name with your choice) and save:
 
    ```text
@@ -150,22 +155,28 @@ This shows how quickly instructions apply to **every new** chat in the repo.
    Explain what WeatherRepository does.
    ```
 
-✅ The explanation arrives in your persona's voice (with plenty of 🚀🌕🛰️).
+✅ The explanation arrives in your persona's voice. Instruction following is not guaranteed, so treat the tone as a fun signal rather than proof.
 
 > Remove the persona line after the demo so it doesn't leak into the next exercise.
+
+**(Optional) A team-friendly alternative:** instead of a persona, add this line to show a convention that's useful for a real team:
+
+```text
+Explain changes in plain language for developers new to Copilot. State what changed, why, and how to verify it. Do not claim a command passed unless you ran it.
+```
 
 ### 2.3 Code review against your instructions
 
 **[PROMPT]** `[Agent]`
 
 ```text
-Can you review my code and ensure it follows the best practices outlined in the updated copilot-instructions file? List your findings first, then fix them, and run dotnet build and dotnet test at the end.
+Review this sample against the copilot-instructions file. List concrete correctness or clarity findings first, with file references. Fix only supported findings; do not make a change just to demonstrate activity or refactor the whole sample. Run dotnet build and dotnet test and report their actual results. Do not commit or push.
 ```
 
-1. **[Do]** Approve `dotnet build` and `dotnet test` when asked.
+1. **[Do]** Confirm both apps are stopped. Review requests for `dotnet build` and `dotnet test`, and approve only the intended actions.
 2. **[Do]** Review the diff and select **Keep** or **Undo** for each file.
 
-✅ Copilot lists concrete findings that cite the instructions (for example, XML docs, naming, or async usage), applies fixes, and finishes with a passing build and tests.
+✅ Copilot explains supported findings (or reports none), makes only justified changes, and finishes with passing build and tests. Existing tests alone do not prove the new count endpoint: recheck Sydney → `5` and Atlantis → `0`, or ask for endpoint tests.
 
 > Point to make: the instruction file turned a generic AI assistant into one that reviews code against *your team's* standards.
 
@@ -173,19 +184,22 @@ Can you review my code and ensure it follows the best practices outlined in the 
 
 ## Reset after the demo
 
-Discard everything the demo changed (this deletes uncommitted work):
+Stop both apps with `Ctrl+C`, then inspect and keep the work you want:
 
-```bash
-git checkout -- .
-git clean -fd
+```powershell
+git status --short
+git diff
 ```
+
+For another clean run, clone into a **new** directory. Leave the earlier clone intact until you have reviewed its changes. Do not use blanket discard or `git clean` commands on a learner's working directory.
 
 ## Troubleshooting during a live demo
 
 | Problem | Quick fix |
 | --- | --- |
 | No grey suggestion after the comment | Press `Enter` again or type `public`. Check the Copilot Status Bar menu shows you're signed in. |
-| Agent runs `dotnet test` even though you said not to | Select **Skip** on the approval; it's a good moment to explain Manual permissions. |
+| Agent proposes a build/test before verification | Select **Skip** if prompted and restate the boundary. Previously approved commands may not prompt; approval settings, not prose alone, control execution. |
 | New endpoint missing from Scalar | Restart the API (`Ctrl+C`, then `dotnet run --project src/BackEnd`). Scalar only runs in Development, which is the default with `dotnet run`. |
 | Fetching the URL is blocked | Your organization may restrict web access. Paste a few key conventions into the prompt instead. |
-| Persona not applied | Save the file, start a **new** chat, and confirm the file appears under **Chat: Open Customizations** > **Instructions**. |
+| Persona not applied | Save the file, start a **new** chat, and confirm the file appears under **Chat: Open Customizations** > **Instructions**. Remove the persona line when you're done. |
+| Instructions seem ignored | Save the file, start a **new** chat, and confirm it appears under **Chat: Open Customizations** > **Instructions**. Review the actual response; discovery is not guaranteed compliance. |
