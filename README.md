@@ -9,7 +9,7 @@
 > The **Local harness is deprecated** (VS Code 1.146) and will be **removed in February 2027**
 > ([changelog](https://github.blog/changelog/2026-11-16-vs-code-retires-the-local-harness-in-february-2027/)).
 > Every exercise here uses the **Copilot harness**, which has been the default for new sessions since VS Code 1.143.
-> Its file edits and terminal commands run **on your machine**. With the hosted models used in this lab, prompts and relevant code context are sent to the model service. "Local" does not mean offline or that code context never leaves the device. Follow your company's approved Copilot policies.
+> It runs commands and edits files on your PC.
 
 ## What you will learn
 
@@ -21,7 +21,7 @@
 6. Teach Copilot your team's conventions with **custom instructions**.
 7. (Optional, preview, if MCP is allowed) Bring in Microsoft Learn docs with a **Copilot connector** or an **MCP server**.
 
-**Time budget:** 90–120 minutes plus prerequisite setup; this is a planning allowance, not a measured beginner completion time. **Level:** new to Copilot, with basic C# and terminal knowledge. Optional preview features are not required.
+**Time:** about 90 minutes. **Level:** beginner (basic C# and terminal).
 
 ## The sample app
 
@@ -41,7 +41,15 @@ Want a shorter, presenter-led version? See the [live demo walkthrough](demo/walk
 
 ## Part 0 — Prerequisites (do this before the session)
 
-1. **An approved GitHub account with Copilot access.** For company training, ask your administrator to assign access and confirm agents, models, and network access are allowed. Copilot Free is an option for eligible personal learning, subject to allowances; do not use it to bypass company policy. Model and preview-feature availability can differ by plan and policy.
+> [!NOTE]
+> **Before you start (company users)**
+>
+> 1. Use the Copilot account your company assigned. Ask your admin to confirm Copilot agents, models, and preview features/MCP are allowed.
+> 2. C# Dev Kit has its own license terms for company use; check with your admin, or use the free **C#** extension instead.
+> 3. Copilot runs commands and edits files on your PC, but your prompts and code context are sent to the hosted AI model. Use only this sample and made-up data, never passwords, customer data, or company code.
+> 4. Always review what Copilot changes before you keep it.
+
+1. A GitHub account with Copilot access (ask your admin if you use a company account).
 2. **VS Code 1.146 or later** — <https://code.visualstudio.com/download>. Check with **Help > About**. GitHub Copilot is built into VS Code; you don't need to install a separate Copilot extension.
 3. **A .NET 10 SDK (10.0.100 or later)** — <https://dotnet.microsoft.com/download/dotnet/10.0>. It installs side by side with other SDKs. Check in a terminal:
 
@@ -53,11 +61,8 @@ Want a shorter, presenter-led version? See the [live demo walkthrough](demo/walk
 
    > .NET 8 (used by the original module) reached end of support on 10 November 2026. Use .NET 10 (LTS, supported to November 2028).
 
-4. **C# tooling** — this repo recommends **C# Dev Kit**, installed from the Extensions view (`Ctrl+Shift+X`). Company use has [licensing conditions](https://marketplace.visualstudio.com/items/ms-dotnettools.csdevkit/license), including classroom-training and qualifying open-source exceptions; a Copilot seat does not automatically grant a Dev Kit licence for ordinary enterprise development. Confirm eligibility with your administrator. Alternatively, use the **C#** extension (`ms-dotnettools.csharp`) and the `dotnet` commands below; Dev Kit's solution/test UI is optional.
+4. **C# Dev Kit** (recommended) or the **C#** extension — install from the Extensions view (`Ctrl+Shift+X`).
 5. **Git** — <https://git-scm.com/downloads>.
-
-> [!IMPORTANT]
-> Start with this public sample, not a company production repository. Never paste credentials, real customer details, or restricted code into prompts. Review generated code and terminal commands; instructions and passing tests are not security or production-readiness guarantees. Trust only a repository you have inspected, and approve MCP servers separately before enabling them.
 
 ## Part 1 — Get the sample running locally
 
@@ -224,7 +229,7 @@ Inline chat lets you ask for a change right where your cursor is.
 > **✅ Checkpoint 8:** `dotnet test` passes with more than the starter's 15 tests. Restart the API with `dotnet run --project src/BackEnd`; <http://localhost:5100/customers> returns `[]` or a JSON list. In-memory customers disappear whenever the API restarts; this is a learning app, not durable storage.
 
 > [!TIP]
-> Stay with **Manual permissions** for the workshop. **Assisted permissions** uses a probabilistic AI judge, not a security boundary; consider it only after your company's policy allows it. Avoid the **Allow all** permission level and **Autopilot** mode while learning.
+> Stay on **Manual permissions** for this workshop.
 
 ## Exercise 7 — Add a page to the front end (≈10 min)
 
@@ -286,7 +291,7 @@ Give Copilot up-to-date .NET documentation. Choose **one** option.
 
 **Option A: Copilot connector (preview, no configuration)**
 
-Use a GitHub.com account. For Business/Enterprise accounts, your administrator must allow **Editor preview features** and the connector/MCP access. Skip this optional exercise if company policy blocks it; a different paid plan is not the automatic remedy.
+Skip this if your admin hasn't allowed preview features/MCP.
 
 1. Make sure Session Target is **Copilot**.
 2. Run **Chat: Open Customizations** from the Command Palette (`Ctrl+Shift+P`) and select **Browse**.
@@ -346,17 +351,17 @@ If you, or your learners, used Copilot chat before VS Code 1.143, you may have L
 | Problem | Fix |
 | --- | --- |
 | No Copilot features or chat | Sign in (Status Bar Copilot menu). Check that `chat.disableAIFeatures` isn't enabled. |
-| **Copilot** missing from Session Target | Update VS Code to 1.146+. Your organization may restrict harnesses — ask your admin. |
+| **Copilot** missing from Session Target | Update VS Code to 1.146+, or ask your admin. |
 | Agent can't edit files or run commands | Trust the workspace (**Workspaces: Manage Workspace Trust**). |
-| `dotnet` not found or required SDK not found | Install a **.NET 10 SDK (10.0.100 or later)**, then restart VS Code so the terminal picks up `PATH`. Use `dotnet --list-sdks` to confirm it is installed. |
-| Build reports a file in use (`MSB3021` / `MSB3027`) | Stop both `dotnet run` terminals with `Ctrl+C`, then rebuild and restart. |
-| NuGet restore fails on a company network | Ask your administrator about approved NuGet feeds, proxy and certificates; do not disable certificate validation. |
-| Weather page says it can't reach the API | Start `src/BackEnd` first; it must run on `http://localhost:5100`. |
-| Port already in use | Stop only your own app (`Ctrl+C`). If changing the API port in `launchSettings.json`, also update `BackEndUrl` in `src/FrontEnd/appsettings.json`; if changing the web port, use the new browser URL. |
-| No ghost text | Check `github.copilot.enable` for C#, and your Copilot Free monthly allowance. |
-| Agent asks for approval too often | Use the **Allow** dropdown to allow a command for the session, or try **Assisted permissions**. |
+| `dotnet` not found or required SDK not found | Install a .NET 10 SDK (10.0.100 or later), then restart VS Code. |
+| Build reports a file in use (`MSB3021` / `MSB3027`) | Stop both apps with `Ctrl+C`, then rebuild. |
+| NuGet restore fails on a company network | Ask your admin for the approved NuGet feed/proxy. |
+| Weather page says it can't reach the API | Start `src/BackEnd` first (port 5100). |
+| Port already in use | Stop your own app with `Ctrl+C`. If you change the API port, also update `BackEndUrl`. |
+| No ghost text | Check `github.copilot.enable` for C# and your Copilot allowance. |
+| Agent asks for approval too often | Use the **Allow** dropdown to allow a command for the session. |
 | Chat gets slow or loses track in a long session | Type `/compact`, or start a new chat. |
-| Connectors don't appear in **Browse** | Check Session Target **Copilot**, GitHub.com sign-in, discovery/connector settings, and company **Editor preview features** / MCP policy. Skip the optional step if blocked. |
+| Connectors don't appear in **Browse** | Check Session Target is **Copilot**; skip if your admin blocks preview features/MCP. |
 
 ## Quick reference
 
