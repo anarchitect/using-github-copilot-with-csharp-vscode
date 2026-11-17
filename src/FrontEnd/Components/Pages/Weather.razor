@@ -1,0 +1,60 @@
+@page "/weather"
+@inject WeatherForecastClient ForecastClient
+
+<PageTitle>Weather</PageTitle>
+
+<h1>Weather</h1>
+
+<p>This page loads data from the Weather API (BackEnd project).</p>
+
+@if (errorMessage is not null)
+{
+    <p class="error">@errorMessage</p>
+}
+else if (forecasts is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.City</td>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[]? forecasts;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            forecasts = await ForecastClient.GetForecastAsync();
+        }
+        catch (HttpRequestException)
+        {
+            errorMessage = "Could not reach the Weather API. Is the BackEnd project running on http://localhost:5100?";
+        }
+    }
+}

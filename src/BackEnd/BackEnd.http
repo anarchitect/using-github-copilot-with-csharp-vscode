@@ -1,0 +1,12 @@
+@BackEnd_HostAddress = http://localhost:5100
+
+GET {{BackEnd_HostAddress}}/weatherforecast
+Accept: application/json
+
+###
+
+GET {{BackEnd_HostAddress}}/weatherforecast/Sydney
+Accept: application/json
+
+###
+
