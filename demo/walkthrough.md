@@ -138,23 +138,32 @@ Inspect this sample's .NET 10 API, Blazor InteractiveServer app and xUnit tests.
 
 > Tip: you can also create the file without a prompt. Run **Chat: Open Customizations**, select **Instructions**, then select **+** next to **Workspace**.
 
-### 2.2 Make explanations useful to a new team
+### 2.2 (Optional, for fun) Give Copilot a persona
 
-Use instructions for a repeatable team need, not a fictional persona.
+This shows how quickly instructions apply to **every new** chat in the repo.
 
-1. **[Do]** Add this line to `.github/copilot-instructions.md` and save:
+1. **[Do]** Pick a persona, for example Neil Armstrong or James Bond.
+2. **[Do]** Add this line at the top of `.github/copilot-instructions.md` (replace the name with your choice) and save:
 
    ```text
-   Explain changes in plain language for developers new to Copilot. State what changed, why, and how to verify it. Do not claim a command passed unless you ran it.
+   You are the Neil Armstrong of code. Talk to me like Neil Armstrong and use space characters in your explanations!
    ```
 
-2. **[Do]** Start a **new** chat (`Ctrl+N` in the Chat view) and ask `[Ask]`:
+3. **[Do]** Start a **new** chat (`Ctrl+N` in the Chat view) and ask `[Ask]`:
 
    ```text
    Explain what WeatherRepository does.
    ```
 
-✅ Check that the instructions are discovered and the explanation is understandable to the team. Instruction following is not guaranteed; review the answer instead of treating its tone as proof.
+✅ The explanation arrives in your persona's voice. Instruction following is not guaranteed, so treat the tone as a fun signal rather than proof.
+
+> Remove the persona line after the demo so it doesn't leak into the next exercise.
+
+**(Optional) A team-friendly alternative:** instead of a persona, add this line to show a convention that's useful for a real team:
+
+```text
+Explain changes in plain language for developers new to Copilot. State what changed, why, and how to verify it. Do not claim a command passed unless you ran it.
+```
 
 ### 2.3 Code review against your instructions
 
@@ -192,4 +201,5 @@ For another clean run, clone into a **new** directory. Leave the earlier clone i
 | Agent proposes a build/test before verification | Select **Skip** if prompted and restate the boundary. Previously approved commands may not prompt; approval settings, not prose alone, control execution. |
 | New endpoint missing from Scalar | Restart the API (`Ctrl+C`, then `dotnet run --project src/BackEnd`). Scalar only runs in Development, which is the default with `dotnet run`. |
 | Fetching the URL is blocked | Your organization may restrict web access. Paste a few key conventions into the prompt instead. |
+| Persona not applied | Save the file, start a **new** chat, and confirm the file appears under **Chat: Open Customizations** > **Instructions**. Remove the persona line when you're done. |
 | Instructions seem ignored | Save the file, start a **new** chat, and confirm it appears under **Chat: Open Customizations** > **Instructions**. Review the actual response; discovery is not guaranteed compliance. |

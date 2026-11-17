@@ -43,13 +43,13 @@ Want a shorter, presenter-led version? See the [live demo walkthrough](demo/walk
 
 1. **An approved GitHub account with Copilot access.** For company training, ask your administrator to assign access and confirm agents, models, and network access are allowed. Copilot Free is an option for eligible personal learning, subject to allowances; do not use it to bypass company policy. Model and preview-feature availability can differ by plan and policy.
 2. **VS Code 1.146 or later** — <https://code.visualstudio.com/download>. Check with **Help > About**. GitHub Copilot is built into VS Code; you don't need to install a separate Copilot extension.
-3. **.NET SDK 10.0.404** — <https://dotnet.microsoft.com/download/dotnet/10.0>. Install this version side by side with other SDKs. Check in a terminal:
+3. **A .NET 10 SDK (10.0.100 or later)** — <https://dotnet.microsoft.com/download/dotnet/10.0>. It installs side by side with other SDKs. Check in a terminal:
 
    ```powershell
    dotnet --list-sdks
    ```
 
-   The list must include `10.0.404`. `global.json` selects that exact stable SDK because Blazor's SDK-supplied assets participate in the package lock. Install the **SDK**, not only the runtime; .NET 11 alone does not satisfy this baseline. After opening the repo, `dotnet --version` should report `10.0.404`.
+   The list must include a `10.0.x` version (10.0.100 or later). `global.json` selects the newest stable .NET 10 SDK you have installed. Install the **SDK**, not only the runtime; .NET 11 alone does not satisfy this baseline. After opening the repo, `dotnet --version` should report a `10.0.x` version.
 
    > .NET 8 (used by the original module) reached end of support on 10 November 2026. Use .NET 10 (LTS, supported to November 2028).
 
@@ -348,8 +348,7 @@ If you, or your learners, used Copilot chat before VS Code 1.143, you may have L
 | No Copilot features or chat | Sign in (Status Bar Copilot menu). Check that `chat.disableAIFeatures` isn't enabled. |
 | **Copilot** missing from Session Target | Update VS Code to 1.146+. Your organization may restrict harnesses — ask your admin. |
 | Agent can't edit files or run commands | Trust the workspace (**Workspaces: Manage Workspace Trust**). |
-| `dotnet` not found or required SDK not found | Install SDK **10.0.404**, then restart VS Code so the terminal picks up `PATH`. Use `dotnet --list-sdks` to confirm it is installed. |
-| A newer SDK is installed but the lab refuses it | Install 10.0.404 side by side. Maintainers must update `global.json` and package locks together when adopting a newer SDK. |
+| `dotnet` not found or required SDK not found | Install a **.NET 10 SDK (10.0.100 or later)**, then restart VS Code so the terminal picks up `PATH`. Use `dotnet --list-sdks` to confirm it is installed. |
 | Build reports a file in use (`MSB3021` / `MSB3027`) | Stop both `dotnet run` terminals with `Ctrl+C`, then rebuild and restart. |
 | NuGet restore fails on a company network | Ask your administrator about approved NuGet feeds, proxy and certificates; do not disable certificate validation. |
 | Weather page says it can't reach the API | Start `src/BackEnd` first; it must run on `http://localhost:5100`. |

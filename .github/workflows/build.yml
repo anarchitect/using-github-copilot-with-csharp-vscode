@@ -17,7 +17,9 @@ jobs:
       - uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
-      - run: dotnet restore WeatherApp.slnx --locked-mode
+      - run: dotnet restore src/BackEnd/BackEnd.csproj --locked-mode
+      - run: dotnet restore tests/BackEnd.Tests/BackEnd.Tests.csproj --locked-mode
+      - run: dotnet restore src/FrontEnd/FrontEnd.csproj
       - run: dotnet build WeatherApp.slnx --no-restore --warnaserror
       - run: dotnet test WeatherApp.slnx --no-build --logger trx --results-directory TestResults
       - name: Check both running apps
