@@ -15,13 +15,13 @@
 
 1. Set up VS Code, .NET 10, and GitHub Copilot on your own computer.
 2. Start a chat session that uses the **Copilot harness**, and pick an agent, model, and permission level.
-3. Write C# faster with **inline suggestions** and **next edit suggestions (NES)**.
+3. Use both types of **inline suggestions**: **ghost text suggestions** (from a comment or method stub) and **next edit suggestions (NES)**.
 4. Explain and document code with **inline chat**.
 5. Ask questions about a codebase, **plan** a change, then let an **agent** build and test it.
 6. Teach Copilot your team's conventions with **custom instructions**.
 7. (Optional, preview, if MCP is allowed) Bring in Microsoft Learn docs with a **Copilot connector** or an **MCP server**.
 
-**Time:** about 90 minutes. **Level:** beginner (basic C# and terminal).
+**Time:** budget 2 hours including setup (a planning allowance, not a measured class duration). **Level:** beginner (basic C# and terminal).
 
 ## The sample app
 
@@ -109,29 +109,29 @@ For a repeatable HTTP smoke check, stop both apps and run `pwsh -File .\demo\Tes
 
 1. **Sign in:** select **Sign in to use Copilot** in the Copilot menu in the Status Bar, or use the **Accounts** menu in the Activity Bar > **Sign in with GitHub to use GitHub Copilot**.
 2. **Open the Chat view:** `Ctrl+Alt+I`. Start a new chat with `Ctrl+N` while the Chat view has focus.
-3. In the chat input you'll find four pickers. Set them like this for the whole module:
+3. Before sending the first prompt, choose **Copilot** in **Session Target**. Set the other controls below the chat input as follows:
 
    | Picker | Choose | Why |
    | --- | --- | --- |
    | **Session Target** | **Copilot** | The Copilot harness. It's the default, but check it — do **not** pick *Local*. |
    | **Agent** | **Ask** or **Agent** (each exercise tells you which) | *Ask* answers questions; *Agent* edits files and runs commands. Type `/plan` for planning. |
-   | **Model** | **Copilot Fusion** or an available **Auto** option | Availability depends on your account and policy; the exercises do not require a particular model. |
+   | **Language model** | **Copilot Fusion** or an available **Auto** option | Availability depends on your account and policy; this chat choice does not select the ghost-text completions model. |
    | **Permissions** | **Manual permissions** | Review requested actions and any approval scope. Existing approvals and read-only actions can run without a new prompt. |
 
    ![Chat controls below the prompt: Agent, Copilot Fusion, and Manual permissions](docs/images/chat-controls.png)
 
    *Find the agent, model, and permission controls below the prompt. Screenshots show VS Code 1.146; your available models and layout may differ.*
 
-> **✅ Checkpoint 2:** Session Target says **Copilot**. Ask: `What can you help me with in this workspace?` and get a reply that mentions the BackEnd and FrontEnd projects.
+> **✅ Checkpoint 2:** The new session uses **Copilot**. Ask: `What can you help me with in this workspace?` and get a reply that mentions the BackEnd and FrontEnd projects. After the first prompt, the chat title's **Copilot** prefix identifies the harness; the Session Target picker need not remain visible.
 
 > [!TIP]
 > Type `/` in the chat input to see the slash commands available in Copilot harness sessions, such as `/plan`, `/compact`, `/fork`, and any installed skills.
 
 ---
 
-## Exercise 1 — Inline suggestions (≈10 min)
+## Exercise 1 — Ghost text suggestions from a comment (≈10 min)
 
-Inline suggestions appear as grey "ghost text" while you type.
+**Inline suggestions** is the umbrella term. **Ghost text suggestions** complete code at your cursor in dimmed text; **next edit suggestions** propose another edit and its location. Here, start with ghost text.
 
 1. In the Explorer, right-click `src/BackEnd` > **New File**, and name it `Customer.cs`.
 2. Type this comment on the first line and press `Enter`:
@@ -140,12 +140,45 @@ Inline suggestions appear as grey "ghost text" while you type.
    // Create a class for a Customer with Id, Name, and Email, and a method to validate the email format
    ```
 
-3. Wait for the grey suggestion. Press `Tab` to accept it, or `Esc` to dismiss it. Keep pressing `Enter`/`Tab` until the class is complete.
-4. Hover over a suggestion to see the toolbar, where you can cycle alternatives or accept one word at a time (`Ctrl+Right Arrow`).
+3. Pause for dimmed code at the cursor. If nothing appears, open the Command Palette (`Ctrl+Shift+P`) and run **Trigger Inline Suggestion**. Review it, then press `Tab` to accept or `Esc` to dismiss. Repeat on new lines if the class arrives in parts; don't press `Tab` blindly when no suggestion is visible.
+4. Hover over the suggestion to see its toolbar. You can also accept the next word with `Ctrl+Right Arrow`. Save `Customer.cs` (`Ctrl+S`) before building.
 
 > **✅ Checkpoint 3:** `Customer.cs` contains a `Customer` class with `Id`, `Name`, `Email`, and an `IsValidEmail()`-style method, and `dotnet build` still succeeds.
 >
-> Your code will differ from your neighbour's — Copilot's output isn't deterministic. That's expected.
+> Your code will differ from your neighbour's — Copilot's output isn't deterministic. If ghost text remains unavailable, record **"ghost text not observed"**. You can use Agent to create the requested class so later exercises have `Customer.cs`, but that is recovery, not a ghost-text demonstration.
+
+## Exercise 1b — Ghost text suggestions from a method stub (≈5 min)
+
+A **method stub** is a signature with an unfinished body — the C# equivalent of the function-stub example in the [VS Code getting-started guide](https://code.visualstudio.com/docs/editing/ai-powered-suggestions#_getting-your-first-suggestions).
+
+1. In the existing `demo` folder, create `SumNumbersPractice.cs` and enter this starting code. Keep it outside `src` and `tests`: it is a separate .NET 10 file-based app, not part of the Weather solution.
+
+   ```csharp
+   Console.WriteLine(SumNumbers([1, 2, 3]));
+   Console.WriteLine(SumNumbers([]));
+   Console.WriteLine(SumNumbers([-2, 5]));
+
+   // Return the sum of the numbers; an empty array returns 0.
+   static int SumNumbers(int[] numbers)
+   {
+   }
+   ```
+
+2. Place the cursor immediately after `{`, press `Enter`, and pause. If needed, run **Trigger Inline Suggestion**. Review the dimmed method body and accept with `Tab`. If only part arrives, press `Enter` and repeat until the method returns a result.
+
+   ![Dimmed ghost text at the cursor completing the SumNumbers method with a loop and return](docs/images/ghost-text-stub.png)
+
+   *Solid text is already in the file; the dimmed loop and return are still a suggestion. This capture is partway through completion — your suggestion may use different code.*
+
+3. Save (`Ctrl+S`). In the terminal, from the repository root, run:
+
+   ```powershell
+   dotnet run --file .\demo\SumNumbersPractice.cs
+   ```
+
+> **✅ Checkpoint 3b:** You observed and accepted ghost text inside the stub, and the output is **`6`, `0`, `3`**, one result per line. A build error before completing the return is expected; an error or different output afterwards needs correcting. If suggestions remain unavailable, record **"ghost text not observed"** and skip this standalone exercise; it is not needed for the Customer API.
+
+Return to `src/BackEnd/Customer.cs` for Exercise 2.
 
 ## Exercise 2 — Next edit suggestions (≈5 min)
 
@@ -155,20 +188,20 @@ Continue with `src/BackEnd/Customer.cs` from Exercise 1. You create this file du
 
 1. Ensure `Customer.cs` has a use of `Name` to update. For example, add `public string GetDisplayNameForDemo() => Name;` inside the class if it has no such reference.
 2. Change the **property declaration** from `Name` to `FullName` by typing, leaving the method's reference unchanged. Do not use the symbol-rename command yet.
-3. Look for an **arrow in the editor gutter** pointing at the method's reference to `Name`.
+3. Look for an **arrow in the editor gutter**. Its direction shows where the suggested edit is relative to your cursor; hover over it to see the navigation/acceptance controls.
 
-   ![Next edit suggestion with callout 1 at the gutter arrow and callout 2 at the affected line](docs/images/nes-gutter.png)
+   ![Next edit suggestion indicator at callout 1; callout 2 highlights a separate diagnostic underline](docs/images/nes-gutter.png)
 
-   *1: a next edit is available. 2: the affected line. This identifies the indicator, not the exact replacement; inspect the suggestion before accepting.*
+   *1: the NES gutter indicator. 2: the nearby diagnostic underline is a separate signal, not proof of what Copilot will change. Hover or navigate to inspect the proposed edit.*
 
-4. Press `Tab` to jump to the suggestion, review the proposed change, and press `Tab` again to accept it.
+4. Press `Tab` to jump to the suggestion, review the proposed change, and press `Tab` again to accept it. Save `Customer.cs` (`Ctrl+S`) before building.
 
-> **✅ Checkpoint 4:** You observed and accepted an NES reference update, and the rename is applied everywhere in the file.
-> No gutter arrow? Check `github.copilot.nextEditSuggestions.enabled`. Suggestions are not guaranteed. Record **"NES not observed"**, then complete the reference edit manually, or undo the rename and use **Rename Symbol** (`F2`), and run `dotnet build` so you can continue. That recovery keeps the project compiling; it does not demonstrate NES.
+> **✅ Checkpoint 4:** You observed and accepted an NES reference update, the rename is applied everywhere in the file, and `dotnet build` succeeds.
+> No gutter arrow? Check `github.copilot.nextEditSuggestions.enabled`. Suggestions are not guaranteed. Record **"NES not observed"**, then complete the reference edit manually, or undo the rename and use **Rename Symbol** (`F2`). Save (`Ctrl+S`) and run `dotnet build` so you can continue. That recovery keeps the project compiling; it does not demonstrate NES.
 
 ## Exercise 3 — Inline chat (≈10 min)
 
-Inline chat lets you ask for a change right where your cursor is.
+**Editor inline chat** lets you ask about or change selected code without starting in the Chat view.
 
 1. Select the email-validation method in `Customer.cs`.
 2. Press `Ctrl+I` and type:
@@ -177,7 +210,9 @@ Inline chat lets you ask for a change right where your cursor is.
    Explain what this method does and list any email formats it would get wrong.
    ```
 
-3. Select the method again, press `Ctrl+I`, and type:
+   Press `Enter` to submit and read the answer. Close the inline chat with `Esc`.
+
+3. Select the method again, press `Ctrl+I`, type the following, and press `Enter`:
 
    ```text
    Add XML documentation comments to this method.
@@ -192,7 +227,7 @@ Inline chat lets you ask for a change right where your cursor is.
 > **✅ Checkpoint 5:** The method has a `/// <summary>` comment.
 
 > [!NOTE]
-> Older material asks you to type `/explain`, `/doc`, `/fix`, or `/generate`. Plain-English prompts like the ones above work everywhere and are the recommended approach in the Copilot harness.
+> Use the plain-English prompts above rather than relying on older slash-command lists. Editor inline chat is distinct from a Copilot harness session in the Chat view. If `Ctrl+I` opens **Ask in Chat** for a file in an active editing session, set `inlineChat.askInChat` to `false` in Settings and try again.
 
 ## Exercise 4 — Ask about the codebase (≈10 min)
 
@@ -220,7 +255,7 @@ Inline chat lets you ask for a change right where your cursor is.
    /plan Add a Customer API to the BackEnd project: GET all, GET by id, POST, PUT and DELETE, stored in memory, with email validation and xUnit tests.
    ```
 
-2. Answer any clarifying questions. When the plan card appears, select **Open Full Plan** to read it.
+2. Answer any clarifying questions. When the **Review Plan** card appears, select **Open Full Plan** (sometimes **Open Plan** or **Plan summary**) to read it.
 
    ![Customer API plan describing the approach and stating that implementation requires approval](docs/images/review-plan.png)
 
@@ -228,11 +263,11 @@ Inline chat lets you ask for a change right where your cursor is.
 
 3. Add feedback if you want changes (for example, *"Keep endpoints in a separate file, not in Program.cs"*), then select **Submit Feedback**.
 
-> **✅ Checkpoint 7:** You have a plan that lists the files to change and how the result will be verified. No code has changed yet.
+> **✅ Checkpoint 7:** You have a plan that lists the files to change and how the result will be verified. No application code has changed; a plan file may have been created.
 
 ## Exercise 6 — Let the agent build and test it (≈20 min)
 
-1. Stop both running apps with `Ctrl+C`. Implement the plan from Exercise 5, or start a new chat with **Agent** selected and paste:
+1. Stop both running apps with `Ctrl+C`. On Exercise 5's plan card, select **Implement Plan** to start implementation. **Approve Plan Only** approves without running it; if you chose that, switch the mode picker from **Plan** to **Interactive** and ask the agent to implement the approved plan. Alternatively, start a new chat with **Agent** selected and paste:
 
    ```text
    In the BackEnd project:
@@ -243,8 +278,8 @@ Inline chat lets you ask for a change right where your cursor is.
    5. Finish with a short summary of what you changed.
    ```
 
-2. Watch the agent work. With **Manual permissions**, review approval requests for commands such as `dotnet test`. An action already covered by an approval might not prompt again. Prefer a one-time approval while learning; select **Skip** if a command is not appropriate.
-3. Review the changed files in the chat's changes list. **Keep** what you like and **Undo** what you don't.
+2. Watch the agent work. With **Manual permissions**, review approval requests for commands such as `dotnet test`. An action already covered by an approval might not prompt again. Prefer **Allow Once** where offered; deny an inappropriate action.
+3. Review the changed files in the chat's changes list. Tracked edits are already saved: **Keep** marks them reviewed; **Undo** reverts them. Inspect the terminal and `git diff` too, because terminal-made changes may not appear in that list.
 
 > **✅ Checkpoint 8:** `dotnet test` passes with more than the starter's 15 tests. Restart the API with `dotnet run --project src/BackEnd`; <http://localhost:5100/customers> returns `[]` or a JSON list. In-memory customers disappear whenever the API restarts; this is a learning app, not durable storage.
 
@@ -292,13 +327,13 @@ Custom instructions are Markdown files that Copilot reads automatically, so you 
    - Add XML documentation comments to public members.
    ```
 
-3. Stop both apps, start a **new** chat (Agent), and ask:
+3. Use **File > Save All** so both instruction files are saved. Stop both apps, start a **new** chat (Agent), and ask:
 
    ```text
    Add a GET /customers/search?name= endpoint that searches customers by FullName, with xUnit tests. Do not change the Weather endpoints. Run dotnet build and dotnet test.
    ```
 
-4. Review the diff for a separate endpoints file, appropriate async usage, XML docs, and new tests. To confirm discovery, run **Chat: Open Customizations** and select **Instructions**. Instructions guide the model; they are not enforced rules. After testing, restart both apps before trying the new route.
+4. Review the diff for a separate endpoints file, appropriate async usage, XML docs, and new tests. To check discovery, run **Chat: Open Customizations** and select **Instructions** in the **Agent Customizations editor**. A listed file does not prove it was included in a request or followed; inspect the actual changes. After testing, restart both apps before trying the new route.
 
 > **✅ Checkpoint 10:** The new endpoint follows your conventions without you mentioning them in the prompt.
 
@@ -309,11 +344,11 @@ Custom instructions are Markdown files that Copilot reads automatically, so you 
 
 Give Copilot up-to-date .NET documentation. Choose **one** option.
 
-**Option A: Copilot connector (preview, no configuration)**
+**Option A: Copilot connector (preview, guided connection)**
 
-Skip this if your admin hasn't allowed preview features/MCP.
+Skip this if your admin hasn't allowed preview features/MCP. Copilot connectors are **GitHub-managed MCP servers**; they require GitHub.com and, for company plans, the **Editor preview features** policy and relevant service/MCP approvals.
 
-1. Make sure Session Target is **Copilot**.
+1. Start a new chat with Session Target **Copilot**.
 2. Run **Chat: Open Customizations** from the Command Palette (`Ctrl+Shift+P`) and select **Browse**.
 3. Choose **Copilot Connectors**, find **Microsoft Learn Docs**, select **Connect**, and complete authorization.
 
@@ -332,7 +367,7 @@ Create `.mcp.json` in the repository root (this is the Copilot harness format, u
 }
 ```
 
-Or add it through **Chat: Open Customizations** > **MCP Servers** > **Add Server**.
+Do not substitute `.vscode/mcp.json`: it uses the editor/Local harness format, not this Copilot-native format.
 
 Then ask (Agent):
 
@@ -360,8 +395,8 @@ The Local harness is retiring (removed February 2027, [changelog](https://github
 | NuGet restore fails on a company network | Ask your admin for the approved NuGet feed/proxy. |
 | Weather page says it can't reach the API | Start `src/BackEnd` first (port 5100). |
 | Port already in use | Stop your own app with `Ctrl+C`. If you change the API port, also update `BackEndUrl`. |
-| No ghost text | Check `github.copilot.enable` for C# and your Copilot allowance. |
-| Agent asks for approval too often | Use the **Allow** dropdown to allow a command for the session. |
+| No ghost text | Run **Trigger Inline Suggestion**. Check `github.copilot.enable` for C# and your Copilot allowance. |
+| Agent asks for approval too often | Read each request and its scope. Keep **Manual permissions**; existing approvals and read-only actions need not prompt again. |
 | Chat gets slow or loses track in a long session | Type `/compact`, or start a new chat. |
 | Connectors don't appear in **Browse** | Check Session Target is **Copilot**; skip if your admin blocks preview features/MCP. |
 
@@ -371,8 +406,10 @@ The Local harness is retiring (removed February 2027, [changelog](https://github
 | --- | --- |
 | Open the Chat view | `Ctrl+Alt+I` |
 | New chat (in Chat view) | `Ctrl+N` |
-| Inline chat (editor or terminal) | `Ctrl+I` |
-| Accept / dismiss suggestion | `Tab` / `Esc` |
+| Editor inline chat | `Ctrl+I`, then type and press `Enter` |
+| Accept / dismiss ghost text | `Tab` / `Esc` |
+| Navigate to / accept an NES | `Tab`, review, then `Tab` |
+| Request ghost text explicitly | Command Palette > **Trigger Inline Suggestion** |
 | Command Palette | `Ctrl+Shift+P` |
 
 ## Learn more
@@ -386,6 +423,7 @@ The Local harness is retiring (removed February 2027, [changelog](https://github
 7. [Copilot connectors (preview)](https://code.visualstudio.com/docs/agent-customization/copilot-connectors)
 8. [MCP configuration reference](https://code.visualstudio.com/docs/agents/reference/mcp-configuration)
 9. [Canvases (preview)](https://code.visualstudio.com/docs/agents/run/canvases)
+10. [Inline suggestions: ghost text and next edit suggestions](https://code.visualstudio.com/docs/editing/ai-powered-suggestions)
 
 ## Attribution and license
 
