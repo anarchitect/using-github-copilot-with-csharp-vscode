@@ -23,7 +23,7 @@
    If you have earlier exercise changes or instruction files, keep them and use a fresh clone for this demo. Do not delete existing work to reset.
 3. In the Chat view (`Ctrl+Alt+I`), start a new chat and check the pickers:
    1. **Session Target:** **Copilot** (not *Local*).
-   2. **Model:** **Copilot Fusion** (or **Auto**, if shown).
+   2. **Language model:** **Copilot Fusion** (or **Auto**, if shown). This chooses the chat model, not the ghost-text completions model.
    3. **Permissions:** **Manual permissions**. Explain that previous approvals and read-only actions may not prompt again.
 4. Use synthetic data only. Local file operations still involve hosted model inference; follow company Copilot policy. See the README's prerequisite and C# Dev Kit licensing checks.
 
@@ -34,7 +34,7 @@
 ### 1.1 Initial setup: VS Code workspace
 
 1. **[Do]** Inspect the public sample, open it in VS Code (`code .`), and select **Yes, I trust the authors** only if you trust it.
-2. **[Do]** Point out the Copilot menu in the Status Bar (signed in) and the Chat view's **Session Target: Copilot**.
+2. **[Do]** Point out the Copilot menu in the Status Bar (signed in). Choose **Copilot** in **Session Target** before the first prompt; an existing session shows a **Copilot** prefix in its chat title instead.
 
 ✅ The Explorer shows `src/BackEnd`, `src/FrontEnd`, and `tests/BackEnd.Tests`.
 
@@ -70,7 +70,9 @@ Review my codebase and explain the project including any relevant programming la
 
 4. **[Do]** Stop both apps with `Ctrl+C` before the next step. This avoids locked build files and stale results on Windows.
 
-### 1.4 Inline completion, then let the agent finish the job
+### 1.4 Ghost text suggestions, then let the agent finish the job
+
+**Inline suggestions** includes both **ghost text suggestions** at the cursor and **next edit suggestions** (NES) for another edit/location. This step demonstrates ghost text, not the NES gutter arrow.
 
 1. **[Do]** Open these files and keep them open as tabs (Copilot uses open files as context):
    1. `src/BackEnd/WeatherForecast.cs`
@@ -82,7 +84,7 @@ Review my codebase and explain the project including any relevant programming la
    // Count forecasts by city
    ```
 
-3. **[Do]** Press `Enter`. When the grey suggestion appears, press `Tab` to accept it (repeat until the method is complete).
+3. **[Do]** Press `Enter`. If no dimmed suggestion appears, run **Trigger Inline Suggestion** from the Command Palette. Review the ghost text, then press `Tab` to accept it (repeat on new lines until the method is complete).
 
    ✅ A new method appears, similar to:
 
@@ -90,7 +92,9 @@ Review my codebase and explain the project including any relevant programming la
    public Task<int> CountByCityAsync(string city) => ...
    ```
 
-   > Your method name and body may differ — that's normal. If no suggestion appears, type `public` to nudge Copilot. If suggestions remain unavailable, ask Agent to add `CountByCityAsync(string city)` using the existing case-insensitive lookup, returning `0` for an unknown city. Label this as the agent fallback, not an inline-completion demonstration.
+   > Your method name and body may differ — that's normal. If ghost text remains unavailable, record **"ghost text not observed"** and ask Agent to add `CountByCityAsync(string city)` using the existing case-insensitive lookup, returning `0` for an unknown city. Label this as agent recovery, not a ghost-text demonstration. For a method-stub variation, use [README Exercise 1b](../README.md#exercise-1b--ghost-text-suggestions-from-a-method-stub-5-min).
+
+   Save the completed method (`Ctrl+S`) before asking the agent to use it.
 
 4. **[PROMPT]** `[Agent]`
 
@@ -98,7 +102,7 @@ Review my codebase and explain the project including any relevant programming la
    Add GET /weatherforecast/{city}/count for the count-by-city method I just added in WeatherRepository. Return the number of forecasts, or 0 for an unknown city. Update the API documentation (OpenAPI name, summary, and description). Do not build, run or test the app yet.
    ```
 
-✅ The agent edits `Program.cs` to add `GET /weatherforecast/{city}/count` in the **Weather** group with `.WithName(...)`, `.WithSummary(...)`, and `.WithDescription(...)`. It may read files or inspect the repository, but should not build or start the app. Review the diff before selecting **Keep**.
+✅ The agent edits `Program.cs` to add `GET /weatherforecast/{city}/count` in the **Weather** group with `.WithName(...)`, `.WithSummary(...)`, and `.WithDescription(...)`. It may read files or inspect the repository, but should not build or start the app. Tracked edits are already saved; review the diff before selecting **Keep** to mark them reviewed.
 
 ### 1.5 Verification
 
@@ -112,7 +116,7 @@ Review my codebase and explain the project including any relevant programming la
 
 Also try `Atlantis`: the documented count contract returns `0`. Check <http://localhost:5100/weatherforecast/Sydney/count> directly if Scalar cannot send the request. Stop the API before Demo 2's build step.
 
-> Point to make: inline suggestions got the method started in seconds; the agent then wired it through the API *and* its documentation across files.
+> Point to make: when observed, ghost text got the method started; the agent then wired it through the API *and* its documentation across files. Do not claim ghost-text success if you used the agent recovery.
 
 ---
 
@@ -126,7 +130,7 @@ Also try `Atlantis`: the documented count contract returns `0`. Check <http://lo
 Inspect this sample's .NET 10 API, Blazor InteractiveServer app and xUnit tests. Create a concise .github/copilot-instructions.md with verified repository facts, build/test commands and relevant conventions. Use https://learn.microsoft.com/dotnet/csharp/fundamentals/coding-style/coding-conventions as a C# reference. Apply async only to actual I/O. Keep new feature endpoints in separate files, but do not move existing endpoints or modify application code in this step.
 ```
 
-1. **[Do]** When Copilot asks to fetch the Microsoft Learn page, show the approval and select **Allow**.
+1. **[Do]** If Copilot asks to fetch the Microsoft Learn page, show the approval and select **Allow Once** where offered. Existing approvals may allow it without a new prompt.
 2. **[Do]** Review the new file and select **Keep**.
 
 ✅ `.github/copilot-instructions.md` exists and has sections for C#, ASP.NET Core minimal APIs, Blazor/Razor, and xUnit tests, with guidance taken from the Microsoft Learn page.
@@ -140,7 +144,7 @@ Inspect this sample's .NET 10 API, Blazor InteractiveServer app and xUnit tests.
 
 ### 2.2 (Optional, for fun) Give Copilot a persona
 
-This shows how quickly instructions apply to **every new** chat in the repo.
+This explores repository instructions in a **new** chat. Discovery, inclusion in a request, and compliance are separate checks; the model may not follow the requested tone.
 
 1. **[Do]** Pick a persona, for example Neil Armstrong or James Bond.
 2. **[Do]** Add this line at the top of `.github/copilot-instructions.md` (replace the name with your choice) and save:
@@ -178,7 +182,7 @@ Review this sample against the copilot-instructions file. List concrete correctn
 
 ✅ Copilot explains supported findings (or reports none), makes only justified changes, and finishes with passing build and tests. Existing tests alone do not prove the new count endpoint: recheck Sydney → `5` and Atlantis → `0`, or ask for endpoint tests.
 
-> Point to make: the instruction file turned a generic AI assistant into one that reviews code against *your team's* standards.
+> Point to make: the instruction file supplies team conventions. Judge the actual review and changes; discovering an instruction file is not proof of compliance.
 
 ---
 
@@ -197,8 +201,8 @@ For another clean run, clone into a **new** directory. Leave the earlier clone i
 
 | Problem | Quick fix |
 | --- | --- |
-| No grey suggestion after the comment | Press `Enter` again or type `public`. Check the Copilot Status Bar menu shows you're signed in. |
-| Agent proposes a build/test before verification | Select **Skip** if prompted and restate the boundary. Previously approved commands may not prompt; approval settings, not prose alone, control execution. |
+| No ghost text after the comment | Run **Trigger Inline Suggestion**. Check the Copilot Status Bar menu shows you're signed in and suggestions are enabled for C#. |
+| Agent proposes a build/test before verification | Deny the request if prompted and restate the boundary. Previously approved commands may not prompt; approval settings, not prose alone, control execution. |
 | New endpoint missing from Scalar | Restart the API (`Ctrl+C`, then `dotnet run --project src/BackEnd`). Scalar only runs in Development, which is the default with `dotnet run`. |
 | Fetching the URL is blocked | Your organization may restrict web access. Paste a few key conventions into the prompt instead. |
 | Persona not applied | Save the file, start a **new** chat, and confirm the file appears under **Chat: Open Customizations** > **Instructions**. Remove the persona line when you're done. |
