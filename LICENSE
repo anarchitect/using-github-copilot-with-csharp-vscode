@@ -1,8 +1,7 @@
 Creative Commons Attribution 4.0 International (CC BY 4.0)
 
-The documentation in this repository (including README.md, VALIDATION.md, and
-demo/walkthrough.md) is licensed under the Creative Commons Attribution 4.0
-International License.
+The documentation in this repository (including README.md) is licensed under the
+Creative Commons Attribution 4.0 International License.
 
 Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
 
@@ -11,11 +10,7 @@ https://github.com/microsoft/Mastering-GitHub-Copilot-for-Paired-Programming
 Copyright (c) Microsoft Corporation, licensed under CC BY 4.0.
 Changes were made: the content was rewritten for local Visual Studio Code and the
 GitHub Copilot harness, updated to .NET 10, restructured into beginner exercises,
-and outdated steps were removed or replaced. See VALIDATION.md for details.
-
-The demo walkthrough is inspired by the steps in
-https://github.com/Azure-Samples/octocat-supply/blob/main/demo/walkthroughs/general/demo-steps.md
-and was rewritten for this repository's C# sample. No code from that repository is included.
+and outdated steps were removed or replaced.
 
 This repository is not an official Microsoft or GitHub publication.
 

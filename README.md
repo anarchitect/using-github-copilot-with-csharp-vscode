@@ -3,7 +3,7 @@
 > **Current as of 18 November 2026** — VS Code 1.146, .NET 10 (LTS), GitHub Copilot **Copilot harness**.
 > A beginner-friendly, hands-on refresh of Microsoft's
 > [Using GitHub Copilot with C#](https://github.com/microsoft/Mastering-GitHub-Copilot-for-Paired-Programming/tree/main/Using-GitHub-Copilot-with-CSharp)
-> module, rewritten for **local VS Code only** (no Codespaces). See [VALIDATION.md](VALIDATION.md) for what changed and why.
+> module, rewritten for **local VS Code only** (no Codespaces).
 
 > [!IMPORTANT]
 > The **Local harness is deprecated** (VS Code 1.146) and will be **removed in February 2027**
@@ -34,8 +34,6 @@ The forecasts are randomly generated **synthetic data**, not a live weather serv
 | `src/BackEnd` | ASP.NET Core minimal API with a 5-day forecast for Brisbane, Sydney, and Melbourne, plus interactive API docs (OpenAPI + Scalar) | http://localhost:5100/weatherforecast and http://localhost:5100/scalar |
 | `src/FrontEnd` | Blazor Web App (interactive server) that shows the forecasts in a table | http://localhost:5200 |
 | `tests/BackEnd.Tests` | xUnit tests for the API | `dotnet test` |
-
-Want a shorter, presenter-led version? See the [live demo walkthrough](demo/walkthrough.md) (Demo 1: Copilot foundations, Demo 2: agents and custom instructions).
 
 ---
 
@@ -103,7 +101,7 @@ Want a shorter, presenter-led version? See the [live demo walkthrough](demo/walk
 > **✅ Checkpoint 1:** The unchanged starter reports **15 passed**, the Weather page shows a 15-row table (5 days × 3 cities), and Scalar lists the **Weather** endpoints.
 > Stop **both** apps with `Ctrl+C` before exercises that edit or rebuild them. On Windows, running apps can lock build output; after an edit, an old process also serves old code.
 
-For a repeatable HTTP smoke check, stop both apps and run `pwsh -File .\demo\Test-Demo.ps1` (PowerShell 7). It starts its own processes, checks the API, Scalar, stylesheet, and server-rendered Weather table, then stops only those processes. Logs are saved under `TestResults\smoke`. It does **not** test browser interactivity or Copilot UI. Ports busy? Stop your own apps or pass `-BackEndPort 15100 -FrontEndPort 15200`.
+For a repeatable HTTP smoke check, stop both apps and run `pwsh -File .\scripts\Test-Smoke.ps1` (PowerShell 7). It starts its own processes, checks the API, Scalar, stylesheet, and server-rendered Weather table, then stops only those processes. Logs are saved under `TestResults\smoke`. It does **not** test browser interactivity or Copilot UI. Ports busy? Stop your own apps or pass `-BackEndPort 15100 -FrontEndPort 15200`.
 
 ## Part 2 — Sign in and start a Copilot harness session
 
@@ -151,7 +149,7 @@ For a repeatable HTTP smoke check, stop both apps and run `pwsh -File .\demo\Tes
 
 A **method stub** is a signature with an unfinished body — the C# equivalent of the function-stub example in the [VS Code getting-started guide](https://code.visualstudio.com/docs/editing/ai-powered-suggestions#_getting-your-first-suggestions).
 
-1. In the existing `demo` folder, create `SumNumbersPractice.cs` and enter this starting code. Keep it outside `src` and `tests`: it is a separate .NET 10 file-based app, not part of the Weather solution.
+1. In the Explorer, create a new folder named `practice` at the repository root (next to `src` and `tests`). In it, create `SumNumbersPractice.cs` (`practice/SumNumbersPractice.cs`) and enter this starting code. Keep it outside `src` and `tests`: it is a separate .NET 10 file-based app, not part of the Weather solution.
 
    ```csharp
    Console.WriteLine(SumNumbers([1, 2, 3]));
@@ -173,7 +171,7 @@ A **method stub** is a signature with an unfinished body — the C# equivalent o
 3. Save (`Ctrl+S`). In the terminal, from the repository root, run:
 
    ```powershell
-   dotnet run --file .\demo\SumNumbersPractice.cs
+   dotnet run --file .\practice\SumNumbersPractice.cs
    ```
 
 > **✅ Checkpoint 3b:** You observed and accepted ghost text inside the stub, and the output is **`6`, `0`, `3`**, one result per line. A build error before completing the return is expected; an error or different output afterwards needs correcting. If suggestions remain unavailable, record **"ghost text not observed"** and skip this standalone exercise; it is not needed for the Customer API.
@@ -431,11 +429,9 @@ This module is adapted from
 [Using GitHub Copilot with C#](https://github.com/microsoft/Mastering-GitHub-Copilot-for-Paired-Programming/tree/main/Using-GitHub-Copilot-with-CSharp)
 in [microsoft/Mastering-GitHub-Copilot-for-Paired-Programming](https://github.com/microsoft/Mastering-GitHub-Copilot-for-Paired-Programming),
 © Microsoft Corporation, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-Changes: rewritten for local VS Code and the Copilot harness, updated to .NET 10, restructured into beginner exercises with checkpoints, and outdated steps removed (see [VALIDATION.md](VALIDATION.md)).
+Changes: rewritten for local VS Code and the Copilot harness, updated to .NET 10, restructured into beginner exercises with checkpoints, and outdated steps removed.
 The sample app is an original minimal implementation of the Weather API + Blazor scenario used by
 [github/dotnet-codespaces](https://github.com/github/dotnet-codespaces).
-The [demo walkthrough](demo/walkthrough.md) is adapted from the DEMO1/DEMO2 steps in
-[Azure-Samples/octocat-supply](https://github.com/Azure-Samples/octocat-supply/blob/main/demo/walkthroughs/general/demo-steps.md); no code from that repository is included.
 
 1. Documentation: [CC BY 4.0](LICENSE).
 2. Sample code: [MIT](LICENSE-CODE).
