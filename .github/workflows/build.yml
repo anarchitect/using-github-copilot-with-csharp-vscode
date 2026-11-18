@@ -24,7 +24,7 @@ jobs:
       - run: dotnet test WeatherApp.slnx --no-build --logger trx --results-directory TestResults
       - name: Check both running apps
         shell: pwsh
-        run: ./demo/Test-Demo.ps1 -NoBuild
+        run: ./scripts/Test-Smoke.ps1 -NoBuild
       - uses: actions/upload-artifact@v4
         if: always()
         with:
