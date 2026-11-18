@@ -118,6 +118,10 @@ For a repeatable HTTP smoke check, stop both apps and run `pwsh -File .\demo\Tes
    | **Model** | **Copilot Fusion** or an available **Auto** option | Availability depends on your account and policy; the exercises do not require a particular model. |
    | **Permissions** | **Manual permissions** | Review requested actions and any approval scope. Existing approvals and read-only actions can run without a new prompt. |
 
+   ![Chat controls below the prompt: Agent, Copilot Fusion, and Manual permissions](docs/images/chat-controls.png)
+
+   *Find the agent, model, and permission controls below the prompt. Screenshots show VS Code 1.146; your available models and layout may differ.*
+
 > **✅ Checkpoint 2:** Session Target says **Copilot**. Ask: `What can you help me with in this workspace?` and get a reply that mentions the BackEnd and FrontEnd projects.
 
 > [!TIP]
@@ -147,13 +151,20 @@ Inline suggestions appear as grey "ghost text" while you type.
 
 Next edit suggestions (NES) predict the *next* change you'll need, based on the edit you just made.
 
+Continue with `src/BackEnd/Customer.cs` from Exercise 1. You create this file during that exercise; it is intentionally absent from the starter.
+
 1. Ensure `Customer.cs` has a use of `Name` to update. For example, add `public string GetDisplayNameForDemo() => Name;` inside the class if it has no such reference.
 2. Change the **property declaration** from `Name` to `FullName` by typing, leaving the method's reference unchanged. Do not use the symbol-rename command yet.
 3. Look for an **arrow in the editor gutter** pointing at the method's reference to `Name`.
-4. Press `Tab` to jump to the suggestion, and `Tab` again to accept it.
 
-> **✅ Checkpoint 4:** The rename is applied everywhere in the file.
-> No gutter arrow? Check `github.copilot.nextEditSuggestions.enabled`. Suggestions are not guaranteed. Complete the reference edit manually, or undo the rename and use **Rename Symbol** (`F2`), then run `dotnet build`. A missing suggestion is not a failed build or a reason to block the class.
+   ![Next edit suggestion with callout 1 at the gutter arrow and callout 2 at the affected line](docs/images/nes-gutter.png)
+
+   *1: a next edit is available. 2: the affected line. This identifies the indicator, not the exact replacement; inspect the suggestion before accepting.*
+
+4. Press `Tab` to jump to the suggestion, review the proposed change, and press `Tab` again to accept it.
+
+> **✅ Checkpoint 4:** You observed and accepted an NES reference update, and the rename is applied everywhere in the file.
+> No gutter arrow? Check `github.copilot.nextEditSuggestions.enabled`. Suggestions are not guaranteed. Record **"NES not observed"**, then complete the reference edit manually, or undo the rename and use **Rename Symbol** (`F2`), and run `dotnet build` so you can continue. That recovery keeps the project compiling; it does not demonstrate NES.
 
 ## Exercise 3 — Inline chat (≈10 min)
 
@@ -171,6 +182,10 @@ Inline chat lets you ask for a change right where your cursor is.
    ```text
    Add XML documentation comments to this method.
    ```
+
+   ![Inline chat prompt above the selected IsValidEmail method](docs/images/inline-chat.png)
+
+   *Select the method, press `Ctrl+I`, and enter the prompt above the selection. Submit it to request the change; the screenshot shows the prompt before submission.*
 
 4. Review the inline diff and select **Keep** (or **Undo**).
 
@@ -206,6 +221,11 @@ Inline chat lets you ask for a change right where your cursor is.
    ```
 
 2. Answer any clarifying questions. When the plan card appears, select **Open Full Plan** to read it.
+
+   ![Customer API plan describing the approach and stating that implementation requires approval](docs/images/review-plan.png)
+
+   *Review the plan's scope before approving implementation. Your generated wording may differ.*
+
 3. Add feedback if you want changes (for example, *"Keep endpoints in a separate file, not in Program.cs"*), then select **Submit Feedback**.
 
 > **✅ Checkpoint 7:** You have a plan that lists the files to change and how the result will be verified. No code has changed yet.

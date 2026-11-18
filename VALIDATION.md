@@ -86,6 +86,12 @@ Source: [Azure-Samples/octocat-supply › demo-steps.md](https://github.com/Azur
 | D9 | Optional persona added to the instructions file | ✅ | Kept as **Optional, for fun** (Neil Armstrong / James Bond examples, new chat, remove afterwards). A separate optional plain-language, no-unexecuted-success-claims line is offered as a team-friendly alternative. |
 | D10 | `[Agent Mode]` code review against the instructions file | ✅ | Same prompt, plus "list findings first … run dotnet build and dotnet test" so beginners see verification. |
 
+## Walkthrough screenshots
+
+The README uses four cropped VS Code 1.146 screenshots at key decision points: chat controls, the NES gutter indicator, the inline-chat prompt, and plan review. Captures are from the 18 November 2026 rehearsal; the NES image uses the screenshot supplied during that walkthrough, with numbered callouts. Unrelated panels, account details, and local paths are excluded.
+
+These are visual signposts, not proof that the complete workshop passed. The inline-chat image shows an unsubmitted prompt; the NES image identifies an available suggestion, not its acceptance or correctness. Generated code and plan wording can differ. The starter still excludes `Customer.cs`, which learners create in Exercise 1.
+
 ## Sample app verification
 
 **Observed environment:** Windows ARM64; .NET SDK 10.0.404; ASP.NET Core runtime 10.0.15. The implementation and target both use C#/.NET 10, ASP.NET Core minimal APIs, Blazor InteractiveServer, and xUnit. No framework translation or mocked replacement packages were used.
