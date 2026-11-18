@@ -136,8 +136,10 @@ Inline suggestions appear as grey "ghost text" while you type.
    // Create a class for a Customer with Id, Name, and Email, and a method to validate the email format
    ```
 
-3. Wait for the grey suggestion. Press `Tab` to accept it, or `Esc` to dismiss it. Keep pressing `Enter`/`Tab` until the class is complete.
+3. Wait for the grey suggestion. Press `Tab` to accept it, or `Esc` to dismiss it. Continue while useful suggestions appear; generating the whole class is not guaranteed.
 4. Hover over a suggestion to see the toolbar, where you can cycle alternatives or accept one word at a time (`Ctrl+Right Arrow`).
+
+> Suggestions stop after imports or a partial class? Select the incomplete code, press `Ctrl+I`, and ask: "Complete this Customer class with Id, Name and Email properties and an email validation method. Initialize non-nullable strings." Review the result, select **Keep**, save, and run `dotnet build`. This is an inline-chat fallback, not an inline-completion result.
 
 > **✅ Checkpoint 3:** `Customer.cs` contains a `Customer` class with `Id`, `Name`, `Email`, and an `IsValidEmail()`-style method, and `dotnet build` still succeeds.
 >

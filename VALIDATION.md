@@ -10,7 +10,7 @@
 
 ## Beginner-company review
 
-**Verdict:** the starter runs locally, and representative agent-generated changes work. The original guide needed corrections before use with a new company team. The complete VS Code 1.146 click path has **not** been observed in this review: the installed editor was 1.145.2. Do not equate the CLI rehearsal below with validation of editor menus, inline suggestions, or preview features.
+**Verdict:** the starter runs locally, and representative agent-generated changes work. A follow-up used the actual VS Code **1.146.0** desktop editor against starter commit `5104ea1`, including authenticated Ask, inline suggestions/chat, plan review, and instruction discovery. Inline class generation needed a fallback, and NES was not reliably observed. The complete workshop is **not** an editor-verified pass; the separate CLI rehearsals below do not establish that.
 
 | Finding | Correction |
 | --- | --- |
@@ -19,6 +19,7 @@
 | Fahrenheit conversion used an approximate divisor and truncation | Applied the exact conversion and rounding to the nearest whole degree, with six reference-point tests. |
 | Running processes were left active before edits/builds | Added explicit stop, build, test, and restart steps to avoid Windows output locks and stale endpoints. |
 | NES had no guaranteed use of the renamed property | Added a dependent reference and a manual/rename-symbol fallback; a missing suggestion does not block learning. |
+| Real inline suggestions stopped after imports and a namespace | Added an explicit inline-chat fallback to Exercise 1 instead of implying that repeated acceptance must finish the class. |
 | Demo reset discarded all uncommitted work | Replaced blanket discard/clean commands with inspection and a fresh disposable clone. |
 | Manual permissions promised approval for every action | Explained existing approvals/read-only actions; corrected **Allow all** versus **Autopilot** mode terminology. [Approval reference](https://code.visualstudio.com/docs/agents/run/approvals). |
 | Personal instructions were directed to the agents directory | Separated personal agents, modular instructions, and general instructions. [Migration destinations](https://code.visualstudio.com/docs/agent-customization/migrate-customizations#_move-user-agents-and-instructions). |
@@ -102,11 +103,28 @@ Source: [Azure-Samples/octocat-supply › demo-steps.md](https://github.com/Azur
 | Presenter Demo 1 rehearsal | Actual Copilot CLI 1.0.112-0 generated a count method/endpoint in an isolated checkout. Independent build and 5 existing tests passed; live HTTP returned Sydney → `5`, Atlantis → `0`; Scalar displayed metadata and sent Sydney → `200`, body `5`. The inline-completion result was simulated by agent edits, not observed in the editor. |
 | Customer exercises rehearsal | Actual Copilot CLI generated Customer CRUD, 400/404 tests, and an InteractiveServer list/add page in another isolated checkout. Independent test execution: 23 passed. Live HTTP verified create `201`, read/update, delete `204`, invalid email `400`, and missing-after-delete `404`. In a real browser, added `Alex Example` / `alex@example.com`, reloaded and saw the saved row; invalid email was blocked and did not add another row. Generated solutions are deliberately not included in the starter. |
 | Instruction-guided search exercise | Copilot CLI discovery listed the repository instructions and C# scoped instructions with `applyTo: "**/*.cs"`. A continued session read both files and added FullName search with synchronous in-memory work, XML docs, and tests. Independent execution: 32 total tests passed. Weather implementation was preserved. This demonstrates CLI discovery/use, not VS Code discovery or guaranteed rule enforcement. |
-| Continuous integration | [Workflow](.github/workflows/build.yml) now specifies Ubuntu and Windows, locked restore, warnings-as-errors build, xUnit, live-app smoke checks, and retained `TestResults` artifacts. Those new hosted runs are pending publication; local Windows results are not evidence of Linux execution. |
+| Continuous integration | [Workflow](.github/workflows/build.yml) specifies Ubuntu and Windows, locked restore, warnings-as-errors build, xUnit, live-app smoke checks, and retained `TestResults` artifacts. Both hosted checks passed on merged [anarchitect/using-github-copilot-with-csharp-vscode#1](https://github.com/anarchitect/using-github-copilot-with-csharp-vscode/pull/1). These results belong to that change, not every later commit. |
+
+### Actual VS Code follow-up
+
+Observed on **18 November 2026 UTC** in a separate VS Code **1.146.0** Windows ARM64 profile with existing extensions, after GitHub sign-in. Main chat sessions used the **Copilot** target; this was not a minimal-extension company image. Generated exercise files stayed in a disposable training clone and are not part of the starter.
+
+| Check | Observed result |
+| --- | --- |
+| Solution and integrated terminal | C# Dev Kit loaded all three projects. Build and tests ran inside VS Code: 15 passed. |
+| Ask | Returned an accurate, source-backed project overview without application edits. |
+| Inline suggestions | Accepted real ghost text for imports and a namespace. Suggestions did not finish the Customer class; inline chat completed it. |
+| Inline chat | `Ctrl+I`, a plain-English XML-documentation prompt, and **Keep** worked. The editor recorded these inline chats as Local sessions, separately from the main Copilot-target chat. |
+| Saved inline exercise | A separate build completed with zero warnings/errors; the 15 existing Weather tests passed. This does not constitute Customer validator test coverage. |
+| Plan review | Answered clarifying questions, used **Open Full Plan** and **Submit Feedback**, reviewed the revised plan, and selected **Approve Plan Only**. No Customer implementation was authorized. |
+| Instruction discovery and use | **Open Customizations > Instructions** displayed both repository and C# scoped instruction files as **Loaded**. A subsequent Agent session read both and used the requested endpoint-file/route-group pattern. This is not a guarantee of universal rule compliance. |
+| Agent edit/build/test loop | Agent added the count method, endpoint, HTTP examples, and three test cases in the editor. Reviewed one-time terminal approvals, retained the edits with **Keep**, and observed its successful build and 18 passing tests. Independent execution confirmed zero warnings/errors and 18 passing tests; a test-owned live API returned Sydney → `5`, sydney → `5`, Atlantis → `0`, with count-route OpenAPI metadata. |
+| Live-app smoke check | Launched `demo/Test-Demo.ps1` from the integrated terminal. API, Scalar script, CSS, and 15 server-rendered Weather rows passed; the script stopped its apps. |
+| Environment interruption | A plan request failed with DNS resolution errors. Connectivity recovered and retry produced a plan. This was an environment failure, not a sample-app defect. |
 
 ### Remaining manual acceptance
 
-- Update a presenter/test machine to VS Code 1.146 or later, sign in with the company's approved account, and walk through the exact picker labels, `/plan` card, inline/NES/inline-chat interactions, and instruction discovery.
+- Rehearse NES and the complete Customer CRUD, frontend, and instruction-guided search exercises through the editor. Those full generated-feature results above remain CLI evidence, not a completed VS Code walkthrough.
 - Check the company's actual Copilot policy, entitlement/allowance, approved feeds/proxy, and C# Dev Kit eligibility. Public documentation cannot establish a particular company's access.
 - Optional connectors/MCP need separate administrator approval and live tool-call verification. Their published configuration was checked; neither preview availability nor organization authorization was demonstrated here.
 - Do not infer production readiness from a local training app. There is no authentication, durable customer storage, production hosting, or deployment claim in this module.
