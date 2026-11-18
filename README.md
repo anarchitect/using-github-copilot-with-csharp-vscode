@@ -326,25 +326,7 @@ Using Microsoft Learn, check that my Customer endpoints follow current ASP.NET C
 
 ## Moving from the Local harness
 
-If you, or your learners, used Copilot chat before VS Code 1.143, you may have Local harness habits or files. Here's how they map:
-
-| If you used… (Local harness) | Do this now (Copilot harness) |
-| --- | --- |
-| **Session Target: Local** | Select **Copilot**. To continue an old conversation, open it, open **Session Target**, and select **Copilot**. History and context carry over; tools, permissions, and models may differ. |
-| **Edit mode** | Use the **Agent** agent. Edit mode is deprecated. |
-| `/explain`, `/doc`, `/fix`, `/generate` in the Chat view | Describe what you want in plain English, or use inline chat (`Ctrl+I`) on a selection. Type `/` to see the commands available now. |
-| Prompt files (`*.prompt.md`) | Convert them to **skills**; the Copilot harness doesn't load prompt files. |
-| `.vscode/mcp.json` (`servers` format) | Use workspace-root `.mcp.json` or `~/.copilot/mcp-config.json` (`mcpServers` format). **Chat: Open Customizations** > **Migrations** can move them for you. |
-| `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`, `AGENTS.md` | Keep them — they work in the Copilot harness. |
-| Personal agents stored in your VS Code profile | Move them to `~/.copilot/agents` (or `.github/agents` for the team). |
-| Personal instruction files stored in your VS Code profile | Move modular files to `~/.copilot/instructions`; general personal instructions can use `~/.copilot/copilot-instructions.md`. Shared instructions belong in `.github/instructions` or `.github/copilot-instructions.md`, not the agents directory. |
-| Hooks | Review them manually; tool names and formats differ. |
-
-**Quick migration check:** run **Chat: Open Customizations**, select **Migrations**, and review each detected item. Full guides:
-[Move from the Local to the Copilot harness](https://code.visualstudio.com/docs/agents/run/move-to-copilot) ·
-[Migrate customizations](https://code.visualstudio.com/docs/agent-customization/migrate-customizations).
-
-> Administrators: `vscode.temporaryDefaultToLocalHarness` can keep Local as the temporary default only while Local remains allowed. It does not override `vscode.temporaryAllowLocalHarness: false` or extend availability beyond removal.
+The Local harness is retiring (removed February 2027, [changelog](https://github.blog/changelog/2026-11-16-vs-code-retires-the-local-harness-in-february-2027/)). As a beginner, you only need to do one thing: in the Chat view, set **Session Target** to **Copilot**. If you have older Copilot customizations, see [Move from the Local to the Copilot harness](https://code.visualstudio.com/docs/agents/run/move-to-copilot).
 
 ## Troubleshooting
 
